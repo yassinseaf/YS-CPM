@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon.png">
+    <link rel="apple-touch-icon" href="favicon.png">
+    <title>حسابي - STORE YS CPM</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    
+    <style>
+        * { -webkit-tap-highlight-color: transparent; }
+        body { font-family: 'Cairo', sans-serif; background: linear-gradient(135deg, #0b0f19 0%, #0a0e17 100%); overflow-x: hidden; }
+        ::-webkit-scrollbar { width: 4px; }
+        ::-webkit-scrollbar-track { background: #111827; }
+        ::-webkit-scrollbar-thumb { background: #f59e0b; border-radius: 4px; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        .loading-spinner { width: 20px; height: 20px; border: 2px solid #f59e0b; border-top-color: transparent; border-radius: 50%; animation: spin 0.8s linear infinite; display: inline-block; }
+        .btn-press:active { transform: scale(0.97); transition: transform 0.05s; }
+        .glass-card { background: rgba(15, 25, 40, 0.6); backdrop-filter: blur(10px); border: 1px solid rgba(245, 158, 11, 0.2); }
+        .profile-avatar {
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+            box-shadow: 0 0 30px rgba(245, 158, 11, 0.3);
+        }
+        .input-focus:focus {
+            box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.2);
+            border-color: #f59e0b;
+            outline: none;
+        }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        .fade-in { animation: fadeIn 0.4s ease-out; }
+    </style>
+</head>
+<body class="text-slate-100 min-h-screen">
+
+    <!-- Loading Screen -->
+    <div id="loading-screen" class="fixed inset-0 bg-slate-950 z-50 flex items-center justify-center flex-col gap-4 px-4 text-center">
+        <div class="loading-spinner w-12 h-12 border-4"></div>
+        <p class="text-amber-500 font-bold text-sm sm:text-base">جاري تحميل بياناتك...</p>
+        <p class="text-slate-500 text-xs">متجر CPM السحابي</p>
+    </div>
+
+    <!-- Navbar -->
+    <header class="bg-slate-900/90 backdrop-blur-md border-b border-amber-500/20 sticky top-0 z-40 shadow-lg">
+        <div class="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-14 sm:h-16">
+                <div class="flex items-center gap-2 sm:gap-3">
+                    <div class="bg-gradient-to-br from-amber-400 to-amber-600 text-slate-950 p-2 sm:p-2.5 rounded-xl font-extrabold text-lg sm:text-xl shadow-md shadow-amber-500/10">
+                       YS CPM
+                    </div>
+                    <span class="text-sm sm:text-lg font-extrabold text-white">
+                        <span class="text-amber-500">حسابي</span> الشخصي
+                    </span>
+                </div>
+
+                <div class="flex items-center gap-1.5 sm:gap-2">
+                    <div id="cloud-status" class="flex items-center gap-1 px-2 py-1 rounded-full bg-slate-800 border border-slate-700 text-[9px] sm:text-[10px] text-slate-400 font-bold">
+                        <span class="w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full bg-yellow-500 animate-pulse" id="status-dot"></span>
+                        <span id="status-text">جاري...</span>
+                    </div>
+                    <a href="index.html" class="inline-flex items-center justify-center bg-amber-500 hover:bg-amber-600 text-slate-950 px-2.5 sm:px-3.5 py-1 sm:py-1.5 rounded-xl text-[10px] sm:text-xs font-black transition btn-press">
+                        <i class="fas fa-store ml-1"></i> المتجر
+                    </a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-4xl mx-auto px-4 py-6 sm:py-10">
+        <!-- بطاقة الملف الشخصي -->
+        <div class="glass-card rounded-2xl p-6 sm:p-8 fade-in">
+            <div class="text-center mb-8">
+                <div class="profile-avatar w-24 h-24 bg-gradient-to-br from-amber-400 to-amber-600 rounded-3xl flex items-center justify-center mx-auto mb-4 shadow-xl">
+                    <i class="fas fa-user-astronaut text-5xl text-slate-900"></i>
+                </div>
+                <h1 class="text-2xl sm:text-3xl font-black text-white">مرحباً بك</h1>
+                <p class="text-slate-400 mt-1 text-sm">أكمل بياناتك الشخصية لتتمكن من إدارة حسابك</p>
+                <div class="mt-3 inline-flex items-center gap-2 bg-amber-500/10 px-4 py-1.5 rounded-full border border-amber-500/20">
+                    <i class="fas fa-star text-amber-500 text-xs"></i>
+                    <span class="text-amber-400 text-xs font-bold">البيانات ستظهر للإدارة فقط</span>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <!-- معلومات الحساب -->
+                <div class="bg-slate-900/50 rounded-xl p-5 border border-slate-800">
+                    <h2 class="text-lg font-bold text-white mb-4 flex items-center gap-2">
+                        <i class="fas fa-id-card text-amber-500"></i>
+                        المعلومات الأساسية
+                    </h2>
+                    
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-slate-400 text-sm mb-1">
+                                <i class="fas fa-user ml-1 text-amber-400"></i> الاسم الكامل
+                            </label>
+                            <input type="text" id="profile-name" placeholder="أدخل اسمك الكامل" 
+                                class="w-full bg-slate-800 border border-slate-700 rounded-xl px-4 py-3 text-white placeholder:text-slate-500 input-focus transition">
+                        </div>
+                        
+                        <div>
+                            <label class="block text-slate-400 text-sm mb-1">
+                                <i class="fas fa-calendar-alt ml-1 text-amber-400"></i> العمر
+                            </label>
+                            <input type="number" id="profile-age" placeholder="أدخل عمرك" 
+                                class="w-full bg-slate-800 border border-slate-700 rounded-xl px-4 py-3 text-white placeholder:text-slate-500 input-focus transition">
+                        </div>
+                        
+                        <div>
+                            <label class="block text-slate-400 text-sm mb-1">
+                                <i class="fas fa-phone ml-1 text-amber-400"></i> رقم الهاتف
+                            </label>
+                            <input type="tel" id="profile-phone" placeholder="أدخل رقم هاتفك" 
+                                class="w-full bg-slate-800 border border-slate-700 rounded-xl px-4 py-3 text-white placeholder:text-slate-500 input-focus transition">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- معلومات المتجر -->
+                <div class="bg-slate-900/50 rounded-xl p-5 border border-slate-800">
+                    <h2 class="text-lg font-bold text-white mb-4 flex items-center gap-2">
+                        <i class="fas fa-chart-line text-emerald-500"></i>
+                        إحصائيات حسابك
+                    </h2>
+                    
+                    <div class="space-y-4">
+                        <div class="bg-slate-800/50 rounded-xl p-4">
+                            <p class="text-slate-400 text-xs mb-1">رصيد النقاط الحالي</p>
+                            <p class="text-3xl font-black text-amber-400" id="user-points-display">0</p>
+                        </div>
+                        
+                        <div class="bg-slate-800/50 rounded-xl p-4">
+                            <p class="text-slate-400 text-xs mb-1">المهام المكتملة</p>
+                            <p class="text-3xl font-black text-emerald-400" id="user-tasks-display">0</p>
+                        </div>
+                        
+                        <div class="bg-slate-800/50 rounded-xl p-4">
+                            <p class="text-slate-400 text-xs mb-1">معرف المستخدم</p>
+                            <p class="text-sm font-mono text-slate-300 break-all" id="user-id-display">-</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- أزرار التحكم -->
+            <div class="mt-8 flex flex-col sm:flex-row gap-3">
+                <button id="save-profile-btn" class="flex-1 bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 text-slate-950 font-black py-3 rounded-xl transition btn-press flex items-center justify-center gap-2">
+                    <i class="fas fa-save"></i>
+                    حفظ البيانات الشخصية
+                </button>
+                <button id="reset-profile-btn" class="flex-1 bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold py-3 rounded-xl transition btn-press flex items-center justify-center gap-2">
+                    <i class="fas fa-undo-alt"></i>
+                    إعادة تعيين
+                </button>
+            </div>
+            
+            <div class="mt-6 pt-4 border-t border-slate-800 text-center">
+                <p class="text-slate-500 text-xs">
+                    <i class="fas fa-shield-alt ml-1 text-amber-500"></i>
+                    بياناتك آمنة ومشفرة • يتم تخزينها في قاعدة بيانات سحابية آمنة
+                </p>
+            </div>
+        </div>
+        
+        <!-- بطاقة إضافية للتواصل -->
+        <div class="mt-6 glass-card rounded-2xl p-4 text-center">
+            <p class="text-slate-400 text-sm">
+                <i class="fas fa-headset text-amber-500 ml-1"></i>
+                بحاجة للمساعدة؟ تواصل مع الدعم الفني عبر المتجر
+            </p>
+        </div>
+    </main>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="fixed bottom-4 sm:bottom-6 left-1/2 -translate-x-1/2 z-50 transition-all duration-300 transform translate-y-20 opacity-0 pointer-events-none">
+        <div class="bg-gradient-to-r from-amber-500 to-amber-600 text-slate-950 px-5 sm:px-7 py-3 sm:py-3.5 rounded-xl font-bold shadow-xl text-sm sm:text-base text-center whitespace-nowrap">
+            <i class="fas fa-bell ml-2"></i>
+            <span id="toast-message"></span>
+        </div>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getAuth, signInAnonymously, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFirestore, collection, doc, onSnapshot, getDoc, setDoc, updateDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyBpWkS2skCrg8YZzfPoDmUhLreDdmOcKLg",
+            authDomain: "ys-cpm.firebaseapp.com",
+            projectId: "ys-cpm",
+            storageBucket: "ys-cpm.firebasestorage.app",
+            messagingSenderId: "1041449442787",
+            appId: "1:1041449442787:web:5a3c7762ff5e8ab58354d6"
+        };
+
+        let app, auth, db;
+        let currentUserId = null;
+        let currentUserData = {
+            name: '',
+            age: '',
+            phone: '',
+            points: 0,
+            completedTasks: []
+        };
+        let toastTimeout = null;
+
+        function showToast(msg, isError = false) {
+            const toast = document.getElementById('toast');
+            const messageSpan = document.getElementById('toast-message');
+            if (!toast || !messageSpan) return;
+            
+            if (toastTimeout) clearTimeout(toastTimeout);
+            
+            messageSpan.innerText = msg;
+            const toastDiv = toast.querySelector('div');
+            
+            if (isError) {
+                toastDiv.classList.remove('bg-gradient-to-r', 'from-amber-500', 'to-amber-600');
+                toastDiv.classList.add('bg-gradient-to-r', 'from-red-500', 'to-red-600', 'text-white');
+            } else {
+                toastDiv.classList.remove('bg-gradient-to-r', 'from-red-500', 'to-red-600', 'text-white');
+                toastDiv.classList.add('bg-gradient-to-r', 'from-amber-500', 'to-amber-600', 'text-slate-950');
+            }
+            
+            toast.classList.remove('translate-y-20', 'opacity-0');
+            toast.classList.add('translate-y-0', 'opacity-100');
+            
+            toastTimeout = setTimeout(() => {
+                toast.classList.remove('translate-y-0', 'opacity-100');
+                toast.classList.add('translate-y-20', 'opacity-0');
+                toastTimeout = null;
+            }, 3000);
+        }
+
+        // تحميل بيانات المستخدم من Firebase
+        async function loadUserProfile(uid) {
+            if (!uid) return;
+            
+            const userRef = doc(db, 'users', uid);
+            const userSnap = await getDoc(userRef);
+            
+            if (userSnap.exists()) {
+                const data = userSnap.data();
+                currentUserData = {
+                    name: data.profileName || '',
+                    age: data.profileAge || '',
+                    phone: data.profilePhone || '',
+                    points: data.points || 0,
+                    completedTasks: data.completedTasks || []
+                };
+                
+                // تحديث واجهة المستخدم
+                document.getElementById('profile-name').value = currentUserData.name;
+                document.getElementById('profile-age').value = currentUserData.age;
+                document.getElementById('profile-phone').value = currentUserData.phone;
+                document.getElementById('user-points-display').innerText = currentUserData.points;
+                document.getElementById('user-tasks-display').innerText = currentUserData.completedTasks.length;
+                document.getElementById('user-id-display').innerText = uid.substring(0, 16) + '...';
+            } else {
+                // إنشاء مستخدم جديد
+                await setDoc(userRef, {
+                    points: 0,
+                    completedTasks: [],
+                    profileName: '',
+                    profileAge: '',
+                    profilePhone: '',
+                    createdAt: new Date().toISOString()
+                });
+                showToast('✨ تم إنشاء حساب جديد بنجاح');
+            }
+            
+            // الاستماع للتحديثات المباشرة
+            onSnapshot(userRef, (snapshot) => {
+                if (snapshot.exists()) {
+                    const data = snapshot.data();
+                    currentUserData = {
+                        name: data.profileName || '',
+                        age: data.profileAge || '',
+                        phone: data.profilePhone || '',
+                        points: data.points || 0,
+                        completedTasks: data.completedTasks || []
+                    };
+                    
+                    document.getElementById('profile-name').value = currentUserData.name;
+                    document.getElementById('profile-age').value = currentUserData.age;
+                    document.getElementById('profile-phone').value = currentUserData.phone;
+                    document.getElementById('user-points-display').innerText = currentUserData.points;
+                    document.getElementById('user-tasks-display').innerText = currentUserData.completedTasks.length;
+                }
+            });
+        }
+
+        // حفظ البيانات الشخصية
+        async function saveProfileData() {
+            if (!currentUserId) {
+                showToast('⚠️ يرجى الانتظار، جاري تحميل الحساب', true);
+                return;
+            }
+            
+            const name = document.getElementById('profile-name').value.trim();
+            const age = document.getElementById('profile-age').value.trim();
+            const phone = document.getElementById('profile-phone').value.trim();
+            
+            if (!name) {
+                showToast('⚠️ يرجى إدخال اسمك الكامل', true);
+                return;
+            }
+            
+            if (!age) {
+                showToast('⚠️ يرجى إدخال عمرك', true);
+                return;
+            }
+            
+            if (age < 1 || age > 120) {
+                showToast('⚠️ يرجى إدخال عمر صحيح (1-120)', true);
+                return;
+            }
+            
+            if (!phone) {
+                showToast('⚠️ يرجى إدخال رقم هاتفك', true);
+                return;
+            }
+            
+            if (phone.length < 8) {
+                showToast('⚠️ يرجى إدخال رقم هاتف صحيح', true);
+                return;
+            }
+            
+            const userRef = doc(db, 'users', currentUserId);
+            
+            try {
+                await updateDoc(userRef, {
+                    profileName: name,
+                    profileAge: age,
+                    profilePhone: phone,
+                    lastUpdated: new Date().toISOString()
+                });
+                showToast('✅ تم حفظ بياناتك الشخصية بنجاح');
+            } catch (error) {
+                console.error('Save error:', error);
+                showToast('❌ فشل في حفظ البيانات، حاول مرة أخرى', true);
+            }
+        }
+
+        // إعادة تعيين الحقول
+        function resetProfileFields() {
+            document.getElementById('profile-name').value = currentUserData.name || '';
+            document.getElementById('profile-age').value = currentUserData.age || '';
+            document.getElementById('profile-phone').value = currentUserData.phone || '';
+            showToast('🔄 تم إعادة تعيين الحقول');
+        }
+
+        // تهيئة Firebase والمصادقة
+        async function init() {
+            try {
+                app = initializeApp(firebaseConfig);
+                auth = getAuth(app);
+                db = getFirestore(app);
+                
+                await signInAnonymously(auth);
+                
+                onAuthStateChanged(auth, async (user) => {
+                    if (user) {
+                        currentUserId = user.uid;
+                        document.getElementById('status-dot').className = "w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full bg-green-500";
+                        document.getElementById('status-text').innerHTML = "☁️ متصل";
+                        await loadUserProfile(currentUserId);
+                        document.getElementById('loading-screen').classList.add('hidden');
+                        showToast('✅ تم تحميل ملفك الشخصي');
+                    }
+                });
+                
+            } catch (error) {
+                console.error("Init error:", error);
+                document.getElementById('loading-screen').classList.add('hidden');
+                showToast('❌ فشل الاتصال بقاعدة البيانات', true);
+            }
+        }
+
+        // ربط الأحداث
+        document.getElementById('save-profile-btn')?.addEventListener('click', saveProfileData);
+        document.getElementById('reset-profile-btn')?.addEventListener('click', resetProfileFields);
+        
+        // بدء التطبيق
+        init();
+    </script>
+</body>
+</html>
