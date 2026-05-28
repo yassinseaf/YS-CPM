@@ -1,8 +1,20 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
+    <!-- PWA للتثبيت على الموبايل -->
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="favicon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="YS CPM">
+<meta name="theme-color" content="#f59e0b">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <!-- Favicon -->
+<link rel="icon" type="image/png" sizes="32x32" href="favicon.png">
+
+<!-- للأيفون وبعض الأجهزة -->
+<link rel="apple-touch-icon" href="favicon.png">
     <title>STORE YS CPM</title>
     
     <script src="https://cdn.tailwindcss.com"></script>
@@ -255,8 +267,7 @@
                 <input type="password" id="admin-pass" placeholder="كلمة المرور" class="w-full bg-slate-950 border border-slate-800 text-white rounded-xl px-4 py-3 text-right">
                 <button onclick="submitAdminLogin()" class="w-full bg-amber-500 hover:bg-amber-600 text-slate-950 font-black py-3 rounded-xl active:scale-98 transition">دخول</button>
                 <button onclick="switchView('user')" class="w-full bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold py-3 rounded-xl active:scale-98 transition">عودة</button>
-             <p class="text-center text-[10px] sm:text-xs text-slate-500 mt-4">USER : <span class="text-amber-500">ADMIN ONLY</span></p>
-            </div>
+                <p class="text-center text-[10px] sm:text-xs text-slate-500 mt-4">USER : <span class="text-amber-500">ADMIN ONLY</span></p>
             </div>
         </div>
     </div>
@@ -775,7 +786,74 @@
         
         // Start
         init();
+        // ==========================================
+// زر تثبيت التطبيق PWA
+// ==========================================
+let deferredPrompt;
+
+// إنشاء زر التثبيت
+function createInstallButton() {
+    const navbar = document.querySelector('header .flex.items-center.justify-between');
+    if (navbar && !document.getElementById('install-btn')) {
+        const btn = document.createElement('button');
+        btn.id = 'install-btn';
+        btn.innerHTML = '📲 تثبيت التطبيق';
+        btn.className = 'bg-green-600 hover:bg-green-700 text-white px-2.5 sm:px-3.5 py-1 sm:py-1.5 rounded-xl text-[10px] sm:text-xs font-black transition active:scale-95';
+        btn.style.display = 'none';
+        navbar.appendChild(btn);
+        
+        btn.addEventListener('click', async () => {
+            if (deferredPrompt) {
+                deferredPrompt.prompt();
+                const { outcome } = await deferredPrompt.userChoice;
+                if (outcome === 'accepted') {
+                    console.log('تم تثبيت التطبيق');
+                    btn.style.display = 'none';
+                }
+                deferredPrompt = null;
+            }
+        });
+        return btn;
+    }
+    return null;
+}
+
+// الاستماع لحدث التثبيت
+window.addEventListener('beforeinstallprompt', (e) => {
+    e.preventDefault();
+    deferredPrompt = e;
+    
+    setTimeout(() => {
+        const btn = document.getElementById('install-btn');
+        if (btn) {
+            btn.style.display = 'inline-flex';
+            btn.style.alignItems = 'center';
+            btn.style.gap = '4px';
+        }
+    }, 1000);
+});
+
+// عند اكتمال التثبيت
+window.addEventListener('appinstalled', () => {
+    deferredPrompt = null;
+    const btn = document.getElementById('install-btn');
+    if (btn) btn.style.display = 'none';
+    showToast('✅ تم تثبيت التطبيق بنجاح');
+});
+
+// تشغيل إنشاء الزر
+document.addEventListener('DOMContentLoaded', () => {
+    setTimeout(createInstallButton, 500);
+});
+
+// تسجيل Service Worker
+if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/sw.js')
+            .then(reg => console.log('Service Worker registered:', reg))
+            .catch(err => console.log('Service Worker error:', err));
+    });
+}
     </script>
-  
 </body>
 </html>
