@@ -1,133 +1,50 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-    <!-- PWA للتثبيت على الموبايل -->
-<link rel="manifest" href="manifest.json">
-<link rel="apple-touch-icon" href="favicon.png">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="YS CPM">
-<meta name="theme-color" content="#f59e0b">
+   
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
-    <!-- Favicon -->
-<link rel="icon" type="image/png" sizes="32x32" href="favicon.png">
-
-<!-- للأيفون وبعض الأجهزة -->
-<link rel="apple-touch-icon" href="favicon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon.png">
+    <link rel="apple-touch-icon" href="favicon.png">
     <title>STORE YS CPM</title>
     
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     
     <style>
-        * {
-            -webkit-tap-highlight-color: transparent;
+        * { -webkit-tap-highlight-color: transparent; }
+        body { font-family: 'Cairo', sans-serif; background-color: #0b0f19; overflow-x: hidden; }
+        ::-webkit-scrollbar { width: 4px; }
+        ::-webkit-scrollbar-track { background: #111827; }
+        ::-webkit-scrollbar-thumb { background: #f59e0b; border-radius: 4px; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        .loading-spinner { width: 20px; height: 20px; border: 2px solid #f59e0b; border-top-color: transparent; border-radius: 50%; animation: spin 0.8s linear infinite; display: inline-block; }
+        @media (max-width: 640px) { .stats-card { padding: 10px 8px; } .stats-card p:last-child { font-size: 20px; } }
+        .word-break { word-break: break-word; overflow-wrap: break-word; }
+        .btn-press:active { transform: scale(0.97); transition: transform 0.05s; }
+        
+        /* Toast animation */
+        .toast-show {
+            transform: translateY(0) !important;
+            opacity: 1 !important;
         }
-        body {
-            font-family: 'Cairo', sans-serif;
-            background-color: #0b0f19;
-            overflow-x: hidden;
-        }
-        ::-webkit-scrollbar {
-            width: 4px;
-        }
-        ::-webkit-scrollbar-track {
-            background: #111827;
-        }
-        ::-webkit-scrollbar-thumb {
-            background: #f59e0b;
-            border-radius: 4px;
-        }
-        @keyframes border-glow {
-            0%, 100% { border-color: rgba(245, 158, 11, 0.3); }
-            50% { border-color: rgba(245, 158, 11, 1); }
-        }
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-        .loading-spinner {
-            width: 20px;
-            height: 20px;
-            border: 2px solid #f59e0b;
-            border-top-color: transparent;
-            border-radius: 50%;
-            animation: spin 0.8s linear infinite;
-            display: inline-block;
+        .toast-hide {
+            transform: translateY(20px) !important;
+            opacity: 0 !important;
         }
         
-        /* تحسينات للموبايل */
-        @media (max-width: 640px) {
-            .account-card {
-                margin-bottom: 12px;
-            }
-            .stats-grid {
-                gap: 8px;
-            }
-            .stats-card {
-                padding: 10px 8px;
-            }
-            .stats-card p:first-child {
-                font-size: 9px;
-            }
-            .stats-card p:last-child {
-                font-size: 20px;
-            }
-            .filter-grid {
-                gap: 10px;
-            }
-            .admin-grid {
-                gap: 16px;
-            }
-        }
+        /* منع التحديد عند تعطيل الموقع */
+        .disabled-site { pointer-events: none; opacity: 0.6; user-select: none; }
+        .disabled-site button, .disabled-site a, .disabled-site input, .disabled-site select { pointer-events: none !important; }
         
-        /* تحسينات للشاشات المتوسطة */
-        @media (min-width: 641px) and (max-width: 1024px) {
-            .accounts-grid {
-                grid-template-columns: repeat(2, 1fr) !important;
-            }
-        }
+        .fade-in { animation: fadeIn 0.3s ease-out; }
+        @keyframes fadeIn { from { opacity: 0; transform: scale(0.95); } to { opacity: 1; transform: scale(1); } }
         
-        /* تأثيرات اللمس للموبايل */
-        @media (hover: none) and (pointer: coarse) {
-            button, .cursor-pointer {
-                cursor: default;
-            }
-            button:active {
-                transform: scale(0.97);
-                transition: transform 0.05s;
-            }
-        }
-        
-        /* تحسين النصوص الطويلة */
-        .word-break {
-            word-break: break-word;
-            overflow-wrap: break-word;
-        }
-        
-        /* تحسين شريط الحالة */
-        #cloud-status {
-            font-size: 10px;
-            white-space: nowrap;
-        }
-        
-        @media (max-width: 480px) {
-            #cloud-status span:last-child {
-                display: none;
-            }
-            #cloud-status {
-                padding: 6px 8px;
-            }
-            .logo-text {
-                display: none;
-            }
-            .header-title span:last-child {
-                font-size: 14px;
-            }
-        }
+        /* كود الخصم */
+        .code-input:focus { box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.2); border-color: #f59e0b; outline: none; }
     </style>
 </head>
 <body class="text-slate-100 min-h-screen flex flex-col">
@@ -143,13 +60,12 @@
     <header class="bg-slate-900 border-b border-slate-800 sticky top-0 z-40 shadow-lg">
         <div class="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8">
             <div class="flex items-center justify-between h-14 sm:h-16">
-                <div class="flex items-center gap-2 sm:gap-3 cursor-pointer" onclick="if(window.switchView) switchView('user')">
+                <div class="flex items-center gap-2 sm:gap-3">
                     <div class="bg-gradient-to-br from-amber-400 to-amber-600 text-slate-950 p-2 sm:p-2.5 rounded-xl font-extrabold text-lg sm:text-xl shadow-md shadow-amber-500/10">
                        YS CPM
                     </div>
                     <span class="text-sm sm:text-lg font-extrabold text-white header-title">
-                        متجر <span class="text-amber-500 hidden xs:inline">الحسابات السحابي</span>
-                        <span class="text-amber-500 xs:hidden">YS CPM</span>
+                        متجر <span class="text-amber-500">YS CPM</span>
                     </span>
                 </div>
 
@@ -157,11 +73,10 @@
                     <div id="cloud-status" class="flex items-center gap-1 px-2 py-1 rounded-full bg-slate-800 border border-slate-700 text-[9px] sm:text-[10px] text-slate-400 font-bold">
                         <span class="w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full bg-yellow-500 animate-pulse" id="status-dot"></span>
                         <span id="status-text">جاري...</span>
-                        <span class="hidden sm:inline-block">الاتصال</span>
                     </div>
-                    <button id="header-action-btn" onclick="handleHeaderAction()" class="bg-amber-500 hover:bg-amber-600 text-slate-950 px-2.5 sm:px-3.5 py-1 sm:py-1.5 rounded-xl text-[10px] sm:text-xs font-black transition active:scale-95">
-                        🔑 لوحة الإدارة
-                    </button>
+                    <a href="profile.html" class="inline-flex items-center justify-center bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-600 hover:to-teal-600 text-white px-2.5 sm:px-3.5 py-1 sm:py-1.5 rounded-xl text-[10px] sm:text-xs font-black transition btn-press">
+                        <i class="fas fa-user ml-1"></i> حسابي
+                    </a>
                 </div>
             </div>
         </div>
@@ -172,16 +87,7 @@
         <div class="bg-red-900/20 border-2 border-red-500 rounded-2xl max-w-md w-full p-4 sm:p-6 text-center">
             <div class="text-5xl sm:text-6xl mb-4">⚠️</div>
             <h3 class="text-lg sm:text-xl font-black text-red-400 mb-2">فشل الاتصال بقاعدة البيانات!</h3>
-            <p class="text-slate-300 text-xs sm:text-sm mb-4">لا يمكن الاتصال بـ Firebase. يرجى التحقق من:</p>
-            <ul class="text-right text-[10px] sm:text-xs text-slate-400 space-y-2 mb-6">
-                <li>• التأكد من تفعيل Anonymous Authentication في Firebase Console</li>
-                <li>• التأكد من إنشاء قاعدة Firestore في وضع "test mode"</li>
-                <li>• التحقق من صحة بيانات Firebase Config</li>
-                <li>• التأكد من وجود اتصال بالإنترنت</li>
-            </ul>
-            <button onclick="location.reload()" class="bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold px-6 py-2 rounded-xl transition">
-                🔄 إعادة المحاولة
-            </button>
+            <button onclick="location.reload()" class="bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold px-6 py-2 rounded-xl transition">🔄 إعادة المحاولة</button>
         </div>
     </div>
 
@@ -192,7 +98,6 @@
     <div id="top-message"
          class="bg-gradient-to-l from-amber-600 to-amber-500 text-slate-950 px-3 py-1.5 sm:py-2 text-center text-[10px] sm:text-xs font-black">
     </div>
-  
 
         <section class="relative bg-slate-950 py-8 sm:py-12 border-b border-slate-800 overflow-hidden">
             <div class="absolute inset-0 opacity-5 bg-[radial-gradient(#f59e0b_1px,transparent_1px)] [background-size:16px_16px]"></div>
@@ -201,10 +106,10 @@
                     ☁️ متصل بالسحابة - تحديث فوري
                 </span>
                 <h1 class="text-2xl sm:text-4xl md:text-5xl font-extrabold text-white mt-3 sm:mt-4 mb-2 sm:mb-3 px-2">
-                    احصل على حسابات <span class="text-amber-500">Car Parking</span><br class="hidden xs:block"> مجانية ومدفوعة
+                    احصل على حسابات <span class="text-amber-500">Car Parking</span><br> مجانية ومدفوعة
                 </h1>
                 <p class="text-slate-400 max-w-2xl mx-auto text-[11px] sm:text-sm px-4">
-                   جميع الحسابات شغاله 100%أحصل الان علي واحد منه قبل نفاذ الكميه
+                    جميع الحسابات شغالة 100% - أحصل الآن على واحد قبل نفاذ الكمية
                 </p>
 
                 <div class="grid grid-cols-3 gap-2 sm:gap-3 max-w-2xl mx-auto mt-6 sm:mt-8 px-2">
@@ -217,7 +122,7 @@
                         <p class="text-xl sm:text-2xl font-black text-green-500" id="stat-free">0</p>
                     </div>
                     <div class="bg-slate-900/60 p-2.5 sm:p-3.5 rounded-2xl border border-slate-800 stats-card">
-                        <p class="text-slate-500 text-[9px] sm:text-[10px]">مشاهدات اليوم</p>
+                        <p class="text-slate-500 text-[9px] sm:text-[10px]">مهام مكتملة</p>
                         <p class="text-xl sm:text-2xl font-black text-blue-400" id="stat-views">0</p>
                     </div>
                 </div>
@@ -225,158 +130,176 @@
         </section>
 
         <main class="flex-grow max-w-7xl w-full mx-auto px-3 sm:px-4 py-6 sm:py-8">
-            <div class="bg-slate-900 p-4 sm:p-5 rounded-2xl border border-slate-800 mb-6 sm:mb-8">
-                <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4 filter-grid">
-                    <input type="text" id="search-input" oninput="filterAccounts()" placeholder="ابحث عن حساب..." class="w-full bg-slate-950 border border-slate-800 text-white rounded-xl px-4 py-2.5 sm:py-3 text-sm focus:ring-2 focus:ring-amber-500">
-                    <select id="category-filter" onchange="filterAccounts()" class="w-full bg-slate-950 border border-slate-800 text-white rounded-xl px-4 py-2.5 sm:py-3 text-sm">
-                        <option value="all">الكل</option>
-                        <option value="free">مجاني</option>
-                        <option value="paid_clean">مدفوع سليم</option>
-                        <option value="paid_flawed">مدفوع به عيوب</option>
-                    </select>
-                    <select id="price-sort" onchange="filterAccounts()" class="w-full bg-slate-950 border border-slate-800 text-white rounded-xl px-4 py-2.5 sm:py-3 text-sm">
-                        <option value="default">الترتيب</option>
-                        <option value="low-high">السعر: من الأقل</option>
-                        <option value="high-low">السعر: من الأعلى</option>
-                    </select>
+            <div class="grid grid-cols-1 lg:grid-cols-[1.5fr_0.8fr] gap-5 mb-6">
+                <div class="bg-slate-900 p-4 sm:p-5 rounded-2xl border border-slate-800">
+                    <h3 class="text-lg sm:text-xl font-extrabold text-white mb-3">نقاطك</h3>
+                    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+                        <div class="bg-slate-950 rounded-2xl p-4 flex-1">
+                            <p class="text-slate-400 text-sm mb-1">رصيد النقاط الحالي</p>
+                            <p id="user-points" class="text-4xl sm:text-5xl font-black text-amber-400">0</p>
+                        </div>
+                        <div class="grid grid-cols-2 gap-2">
+                            <button id="nav-accounts-btn" class="bg-amber-500 text-slate-950 px-3 py-2 rounded-xl text-xs sm:text-sm font-black transition btn-press">📦 الحسابات</button>
+                            <button id="nav-tasks-btn" class="bg-slate-800 text-slate-200 px-3 py-2 rounded-xl text-xs sm:text-sm font-black transition btn-press">📋 المهام</button>
+                        </div>
+                    </div>
+                    <p class="text-slate-400 text-xs sm:text-sm mt-3">✨ أكمل المهام لتحصل على نقاط ثم استبدلها بالحسابات</p>
+                </div>
+                <div class="bg-slate-900 p-4 sm:p-5 rounded-2xl border border-slate-800">
+                    <h3 class="text-lg sm:text-xl font-extrabold text-white mb-3">إحصائيات المتجر</h3>
+                    <div class="grid grid-cols-2 gap-3">
+                        <div class="bg-slate-950 p-4 rounded-2xl border border-slate-800">
+                            <p class="text-slate-400 text-[10px] sm:text-xs">عدد الحسابات</p>
+                            <p id="stat-accounts" class="text-2xl sm:text-3xl font-black text-amber-400">0</p>
+                        </div>
+                        <div class="bg-slate-950 p-4 rounded-2xl border border-slate-800">
+                            <p class="text-slate-400 text-[10px] sm:text-xs">مهام متوفرة</p>
+                            <p id="stat-tasks" class="text-2xl sm:text-3xl font-black text-emerald-400">0</p>
+                        </div>
+                    </div>
                 </div>
             </div>
 
-            <div class="mb-8">
-                <div class="flex justify-between items-center mb-4 sm:mb-6 flex-wrap gap-2">
-                    <h3 class="text-lg sm:text-xl font-extrabold text-white flex items-center gap-2">
-                        <span class="w-2 h-5 sm:w-3 sm:h-6 bg-amber-500 rounded-md"></span>
-                        تشكيلة الحسابات
-                    </h3>
-                    <span class="text-slate-400 text-xs sm:text-sm" id="results-count">جاري التحميل...</span>
+            <!-- قسم كود الخصم -->
+            <div class="bg-gradient-to-r from-purple-900/30 to-pink-900/30 rounded-2xl p-4 sm:p-5 mb-6 border border-purple-500/30">
+                <div class="flex flex-col sm:flex-row items-center justify-between gap-4">
+                    <div class="flex items-center gap-3">
+                        <div class="w-12 h-12 bg-purple-500/20 rounded-full flex items-center justify-center">
+                            <i class="fas fa-ticket-alt text-2xl text-purple-400"></i>
+                        </div>
+                        <div>
+                            <h4 class="font-bold text-white"><i class="fas fa-gift text-purple-400 ml-1"></i> أدخل كود الخصم</h4>
+                            <p class="text-slate-400 text-xs">احصل على نقاط إضافية مجاناً</p>
+                        </div>
+                    </div>
+                    <div class="flex flex-1 max-w-md gap-2">
+                        <input type="text" id="redeem-code-input" placeholder="أدخل الكود هنا..." class="flex-1 bg-slate-800 border border-purple-500/30 rounded-xl px-4 py-2.5 text-sm code-input">
+                        <button id="redeem-code-btn" class="bg-purple-600 hover:bg-purple-500 text-white px-5 py-2.5 rounded-xl font-bold transition btn-press">
+                            <i class="fas fa-check ml-1"></i> تفعيل
+                        </button>
+                    </div>
                 </div>
-                <div id="accounts-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 accounts-grid"></div>
-                <div id="empty-state" class="hidden text-center py-16">
-                    <p class="text-slate-500">لا توجد حسابات حالياً</p>
+            </div>
+
+            <!-- قسم الحسابات -->
+            <div id="accounts-section">
+                <div class="bg-slate-900 p-4 sm:p-5 rounded-2xl border border-slate-800 mb-6 sm:mb-8">
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4">
+                        <input type="text" id="search-input" oninput="window.filterAccounts?.()" placeholder="ابحث عن حساب..." class="w-full bg-slate-950 border border-slate-800 text-white rounded-xl px-4 py-2.5 sm:py-3 text-sm focus:ring-2 focus:ring-amber-500">
+                        <select id="category-filter" onchange="window.filterAccounts?.()" class="w-full bg-slate-950 border border-slate-800 text-white rounded-xl px-4 py-2.5 sm:py-3 text-sm">
+                            <option value="all">الكل</option>
+                            <option value="free">مجاني</option>
+                            <option value="paid">مدفوع (نقاط)</option>
+                        </select>
+                        <select id="price-sort" onchange="window.filterAccounts?.()" class="w-full bg-slate-950 border border-slate-800 text-white rounded-xl px-4 py-2.5 sm:py-3 text-sm">
+                            <option value="default">الترتيب</option>
+                            <option value="low-high">النقاط: من الأقل</option>
+                            <option value="high-low">النقاط: من الأكثر</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="mb-8">
+                    <div class="flex justify-between items-center mb-4 sm:mb-6 flex-wrap gap-2">
+                        <h3 class="text-lg sm:text-xl font-extrabold text-white flex items-center gap-2">
+                            <span class="w-2 h-5 sm:w-3 sm:h-6 bg-amber-500 rounded-md"></span>
+                            تشكيلة الحسابات
+                        </h3>
+                        <span class="text-slate-400 text-xs sm:text-sm" id="results-count">جاري التحميل...</span>
+                    </div>
+                    <div id="accounts-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6"></div>
+                    <div id="empty-state" class="hidden text-center py-16">
+                        <p class="text-slate-500">لا توجد حسابات حالياً</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- قسم المهام -->
+            <div id="tasks-section" class="hidden">
+                <div class="bg-slate-900 p-4 sm:p-5 rounded-2xl border border-slate-800">
+                    <div class="flex justify-between items-center mb-4 flex-wrap gap-2">
+                        <h3 class="text-lg sm:text-xl font-extrabold text-white flex items-center gap-2">
+                            <span class="w-2 h-5 sm:w-3 sm:h-6 bg-emerald-500 rounded-md"></span>
+                            المهام المتاحة
+                        </h3>
+                        <span class="text-slate-400 text-xs sm:text-sm" id="tasks-count">0 مهمة</span>
+                    </div>
+                    <div id="tasks-grid" class="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-5"></div>
+                    <div id="empty-tasks" class="hidden text-center py-16">
+                        <p class="text-slate-500">لا توجد مهام حالياً</p>
+                    </div>
                 </div>
             </div>
         </main>
     </div>
 
-    <!-- VIEW 2: ADMIN LOGIN -->
-    <div id="admin-login-view" class="flex-grow flex items-center justify-center p-4 hidden">
-        <div class="bg-slate-900 border border-slate-800 w-full max-w-md rounded-2xl p-5 sm:p-8 mx-3">
-            <div class="text-center mb-5 sm:mb-6">
-                <div class="text-4xl sm:text-5xl mb-3">🔐</div>
-                <h3 class="text-xl sm:text-2xl font-black text-white">تسجيل الدخول</h3>
-                <p class="text-slate-400 text-xs sm:text-sm">لوحة تحكم المالك</p>
-            </div>
-            <div class="space-y-4">
-                <input type="password" id="admin-pass" placeholder="كلمة المرور" class="w-full bg-slate-950 border border-slate-800 text-white rounded-xl px-4 py-3 text-right">
-                <button onclick="submitAdminLogin()" class="w-full bg-amber-500 hover:bg-amber-600 text-slate-950 font-black py-3 rounded-xl active:scale-98 transition">دخول</button>
-                <button onclick="switchView('user')" class="w-full bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold py-3 rounded-xl active:scale-98 transition">عودة</button>
-                <p class="text-center text-[10px] sm:text-xs text-slate-500 mt-4">USER : <span class="text-amber-500">ADMIN ONLY</span></p>
-            </div>
-        </div>
-    </div>
-
-    <!-- VIEW 3: ADMIN DASHBOARD -->
-    <div id="admin-dashboard-view" class="flex-grow max-w-7xl w-full mx-auto px-3 sm:px-4 py-4 sm:py-8 hidden">
-        <div class="bg-slate-900 rounded-2xl border border-slate-800 overflow-hidden">
-            <div class="p-4 sm:p-6 border-b border-slate-800 bg-slate-950/50 flex flex-wrap justify-between items-center gap-3">
-                <div>
-                    <h3 class="text-base sm:text-lg font-bold text-white">لوحة تحكم المالك</h3>
-                    <p class="text-[10px] sm:text-xs text-slate-400">إدارة الحسابات - مزامنة فورية مع Firebase</p>
-                </div>
-                <div class="flex gap-2">
-                    <button onclick="loadDefaultAccounts()" class="bg-slate-800 hover:bg-slate-700 text-slate-300 px-3 sm:px-4 py-1.5 sm:py-2 rounded-xl text-[10px] sm:text-xs font-bold active:scale-95">رفع افتراضي</button>
-                    <button onclick="logoutAdmin()" class="bg-red-600/20 hover:bg-red-600 text-red-400 hover:text-white px-3 sm:px-4 py-1.5 sm:py-2 rounded-xl text-[10px] sm:text-xs font-bold active:scale-95">خروج</button>
-                </div>
-            </div>
-
-            <div class="p-4 sm:p-6 grid grid-cols-1 lg:grid-cols-2 gap-5 sm:gap-6 admin-grid">
-                <!-- Add Account Form -->
-                <div class="bg-slate-950 p-4 sm:p-6 rounded-xl border border-slate-800">
-                    <h4 class="text-amber-500 font-bold mb-4 text-sm sm:text-base">➕ إضافة حساب جديد</h4>
-                    <form id="add-form" class="space-y-3 sm:space-y-4">
-                        <input type="text" id="title" required placeholder="اسم الحساب" class="w-full bg-slate-900 border border-slate-800 text-white rounded-lg px-4 py-2.5 text-sm">
-                        <select id="type" required class="w-full bg-slate-900 border border-slate-800 text-white rounded-lg px-4 py-2.5 text-sm">
-                            <option value="free">مجاني</option>
-                            <option value="paid_clean">مدفوع - سليم</option>
-                            <option value="paid_flawed">مدفوع - به عيوب</option>
-                        </select>
-                        <div id="free-fields" class="hidden space-y-3">
-                            <input type="text" id="email" placeholder="البريد الإلكتروني" class="w-full bg-slate-900 border border-slate-800 text-white rounded-lg px-4 py-2.5 text-sm">
-                            <input type="text" id="password" placeholder="كلمة المرور" class="w-full bg-slate-900 border border-slate-800 text-white rounded-lg px-4 py-2.5 text-sm">
-                        </div>
-                        <div id="paid-fields" class="hidden">
-                            <input type="number" id="price" placeholder="السعر ($)" class="w-full bg-slate-900 border border-slate-800 text-white rounded-lg px-4 py-2.5 text-sm">
-                        </div>
-                        <input type="text" id="money" placeholder="الكاش (مثال: 50M)" class="w-full bg-slate-900 border border-slate-800 text-white rounded-lg px-4 py-2.5 text-sm">
-                        <input type="text" id="coins" placeholder="الذهب (مثال: 40K)" class="w-full bg-slate-900 border border-slate-800 text-white rounded-lg px-4 py-2.5 text-sm">
-                        <input type="text" id="cars" placeholder="السيارات" class="w-full bg-slate-900 border border-slate-800 text-white rounded-lg px-4 py-2.5 text-sm">
-                        <input type="text" id="defect" placeholder="العيوب/الحالة" class="w-full bg-slate-900 border border-slate-800 text-white rounded-lg px-4 py-2.5 text-sm">
-                        <button type="submit" class="w-full bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold py-3 rounded-xl active:scale-98 transition">☁️ رفع للسحابة</button>
-                    </form>
-                </div>
-
-                <!-- Accounts List -->
-                <div class="bg-slate-950 p-4 sm:p-6 rounded-xl border border-slate-800">
-                    <h4 class="text-amber-500 font-bold mb-4 text-sm sm:text-base">📋 قائمة الحسابات</h4>
-                    <div id="admin-accounts-list" class="space-y-2 sm:space-y-3 max-h-[400px] sm:max-h-[500px] overflow-y-auto"></div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- AD MODAL -->
-    <div id="ad-modal" class="fixed inset-0 bg-black/95 backdrop-blur-md z-50 flex items-center justify-center p-3 sm:p-4 hidden">
-        <div class="bg-slate-900 border-2 border-amber-500 rounded-2xl max-w-md w-full p-4 sm:p-6 mx-3">
-            <div class="text-center mb-4">
-                <h3 class="text-lg sm:text-xl font-bold text-white">شاهد الإعلانات</h3>
-                <p class="text-amber-500 text-sm" id="ad-progress">0 / 12</p>
-                <div class="w-full bg-slate-800 h-2 rounded-full mt-2 overflow-hidden">
-                    <div id="ad-progress-bar" class="bg-amber-500 h-full w-0 transition-all"></div>
-                </div>
-            </div>
-            <div id="ad-content" class="bg-slate-800 rounded-xl p-4 sm:p-6 text-center mb-4 min-h-[180px] sm:min-h-[200px] flex items-center justify-center">
-                <p id="ad-text" class="text-white text-sm sm:text-base">جهّز نفسك...</p>
-            </div>
-            <div id="ad-success" class="hidden text-center mb-4">
-                <div class="text-green-500 text-4xl sm:text-5xl mb-2">✓</div>
-                <p class="text-white font-bold">تم الفتح!</p>
-                <div class="bg-slate-800 p-3 rounded-lg mt-2 text-right word-break">
-                    <p class="text-xs sm:text-sm"><span class="text-slate-400">البريد:</span> <span id="released-email" class="text-green-400"></span></p>
-                    <p class="text-xs sm:text-sm"><span class="text-slate-400">كلمة المرور:</span> <span id="released-pass" class="text-green-400"></span></p>
-                </div>
-            </div>
-            <button id="ad-btn" onclick="watchAd()" class="w-full bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold py-2.5 sm:py-3 rounded-xl active:scale-98 transition">ابدأ</button>
-            <button onclick="closeAdModal()" class="w-full mt-2 bg-slate-800 hover:bg-slate-700 text-slate-300 py-2 sm:py-2.5 rounded-xl text-sm active:scale-98 transition">إغلاق</button>
-        </div>
-    </div>
-
-    <!-- CHECKOUT MODAL -->
+    <!-- CHECKOUT MODAL (استبدال الحساب) -->
     <div id="checkout-modal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-3 sm:p-4 hidden">
-        <div class="bg-slate-900 rounded-2xl max-w-md w-full p-4 sm:p-6 mx-3">
-            <h3 class="text-lg sm:text-xl font-bold text-white text-center mb-4">شراء حساب</h3>
+        <div class="bg-slate-900 rounded-2xl max-w-md w-full p-4 sm:p-6 mx-3 border border-amber-500/30">
+            <h3 class="text-lg sm:text-xl font-bold text-white text-center mb-4">🔄 استبدال حساب بالنقاط</h3>
             <div class="bg-slate-800 p-3 sm:p-4 rounded-xl mb-4">
                 <p class="text-slate-400 text-xs sm:text-sm">الحساب:</p>
                 <p class="text-white font-bold text-sm sm:text-base" id="checkout-title"></p>
                 <p class="text-amber-500 font-bold text-sm sm:text-base" id="checkout-price"></p>
             </div>
-            <input type="tel" id="whatsapp-number" placeholder="رقم الواتساب" value="201012345678" class="w-full bg-slate-800 border border-slate-700 text-white rounded-xl px-4 py-3 text-sm mb-4">
-            <button onclick="sendWhatsApp()" class="w-full bg-green-600 hover:bg-green-500 text-white font-bold py-3 rounded-xl active:scale-98 transition">📱 تواصل عبر واتساب</button>
-            <button onclick="closeCheckoutModal()" class="w-full mt-2 bg-slate-800 hover:bg-slate-700 text-slate-300 py-2.5 rounded-xl text-sm active:scale-98 transition">إلغاء</button>
+            <div id="checkout-result" class="hidden bg-slate-800/50 p-4 rounded-2xl border border-emerald-500 mb-4">
+                <p class="text-emerald-400 font-bold text-sm mb-2">✅ تم الاستبدال بنجاح!</p>
+                <p class="text-slate-300 text-xs mb-1">📧 البريد الإلكتروني:</p>
+                <div id="checkout-email" class="mb-3"></div>
+                <p class="text-slate-300 text-xs mb-1">🔑 كلمة المرور:</p>
+                <div id="checkout-password"></div>
+            </div>
+            <button id="checkout-action-btn" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-3 rounded-xl transition btn-press">استبدال بالنقاط</button>
+            <button onclick="closeCheckoutModal()" class="w-full mt-2 bg-slate-800 hover:bg-slate-700 text-slate-300 py-2.5 rounded-xl text-sm transition btn-press">إلغاء</button>
         </div>
     </div>
 
-    <div id="toast" class="fixed bottom-4 sm:bottom-6 left-4 sm:left-6 right-4 sm:right-auto z-50 transform translate-y-20 opacity-0 transition-all duration-300">
-        <div class="bg-amber-500 text-slate-950 px-4 sm:px-6 py-2.5 sm:py-3 rounded-xl font-bold shadow-xl text-sm sm:text-base text-center"></div>
+    <!-- Toast Notification -->
+    <div id="toast" class="fixed bottom-4 sm:bottom-6 left-1/2 -translate-x-1/2 z-50 transition-all duration-300 transform translate-y-20 opacity-0 pointer-events-none">
+        <div class="bg-gradient-to-r from-amber-500 to-amber-600 text-slate-950 px-5 sm:px-7 py-3 sm:py-3.5 rounded-xl font-bold shadow-xl text-sm sm:text-base text-center whitespace-nowrap">
+            <i class="fas fa-bell ml-2"></i>
+            <span id="toast-message"></span>
+        </div>
+    </div>
+
+    <!-- نافذة الرسالة الدائمة (تمنع استخدام الموقع) -->
+    <div id="mandatory-message-modal" class="fixed inset-0 z-[100] flex items-center justify-center p-4 hidden" style="background: rgba(0,0,0,0.95); backdrop-filter: blur(8px);">
+        <div class="bg-gradient-to-br from-red-900/50 to-slate-900 rounded-2xl max-w-md w-full p-6 border-2 border-red-500 shadow-2xl text-center fade-in">
+            <div class="w-20 h-20 bg-red-500/20 rounded-full flex items-center justify-center mx-auto mb-4">
+                <i class="fas fa-exclamation-triangle text-5xl text-red-500"></i>
+            </div>
+            <h3 class="text-2xl font-black text-red-400 mb-2" id="mandatory-title">⚠️ تنبيه هام</h3>
+            <p class="text-slate-300 text-sm mb-4 leading-relaxed" id="mandatory-content"></p>
+            <div class="bg-slate-800/50 rounded-xl p-3 mb-4">
+                <p class="text-amber-400 text-xs"><i class="fas fa-lock ml-1"></i> تم تعطيل المتجر مؤقتاً</p>
+                <p class="text-slate-500 text-[10px] mt-1">لا يمكنك استخدام أي ميزة في الموقع حالياً</p>
+            </div>
+            <button id="mandatory-close-btn" class="bg-slate-700 text-slate-400 font-bold py-3 px-6 rounded-xl transition cursor-not-allowed" disabled>
+                <i class="fas fa-times ml-1"></i> تم تعطيل الإغلاق
+            </button>
+        </div>
+    </div>
+
+    <!-- نافذة الرسالة العادية -->
+    <div id="normal-message-modal" class="fixed inset-0 z-[100] flex items-center justify-center p-4 hidden" style="background: rgba(0,0,0,0.7); backdrop-filter: blur(4px);">
+        <div class="bg-gradient-to-br from-blue-900/50 to-slate-900 rounded-2xl max-w-md w-full p-6 border-2 border-blue-500 shadow-2xl fade-in">
+            <div class="w-16 h-16 bg-blue-500/20 rounded-full flex items-center justify-center mx-auto mb-4">
+                <i class="fas fa-bell text-4xl text-blue-400"></i>
+            </div>
+            <h3 class="text-xl font-bold text-blue-400 mb-2 text-center" id="normal-title"></h3>
+            <p class="text-slate-300 text-sm mb-6 text-center leading-relaxed" id="normal-content"></p>
+            <button id="normal-close-btn" class="w-full bg-blue-500 hover:bg-blue-600 text-white font-bold py-3 rounded-xl transition btn-press">
+                <i class="fas fa-check ml-1"></i> فهمت
+            </button>
+        </div>
     </div>
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-        import { getAuth, signInAnonymously } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-        import { getFirestore, collection, doc, deleteDoc, onSnapshot, addDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+        import { getAuth, signInAnonymously, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFirestore, collection, doc, onSnapshot, getDoc, setDoc, updateDoc, increment, arrayUnion } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
-        // ==========================================
-        // FIREBASE CONFIG
-        // ==========================================
+        // Firebase Config
         const firebaseConfig = {
             apiKey: "AIzaSyBpWkS2skCrg8YZzfPoDmUhLreDdmOcKLg",
             authDomain: "ys-cpm.firebaseapp.com",
@@ -386,96 +309,155 @@
             appId: "1:1041449442787:web:5a3c7762ff5e8ab58354d6"
         };
 
-        let ADMIN_PASSWORD = "792013"; // مباشر بدون جلب
-
         let app, auth, db;
         let accounts = [];
-        let currentView = 'user';
-        let isAdmin = false;
-        let activeAdAccount = null;
+        let tasks = [];
+        let currentUser = { points: 0, completedTasks: [], usedCodes: [] };
+        let currentUserId = null;
+        let activeSection = 'accounts';
         let activeCheckout = null;
-        let adIndex = 0;
-        let adTimer = null;
+        let toastTimeout = null;
         
-        const defaultAccounts = [
-            { title: "🔥 حساب بوقاتي جلتش", type: "paid_flawed", money: "50M", coins: "50K", cars: "بوقاتي كروم", defect: "جلتش سرعة", price: 15, email: "", password: "" },
-            { title: "🎁 حساب مجاني VIP", type: "free", money: "50M", coins: "20K", cars: "بوقاتي + مكلارين", defect: "سليم", price: 0, email: "vip_free@cpm.com", password: "FreeVIP123" },
-            { title: "💎 حساب سليم كامل", type: "paid_clean", money: "45M", coins: "15K", cars: "كل السيارات", defect: "سليم 100%", price: 30, email: "", password: "" },
-            { title: "⚡ حساب مكلارين", type: "free", money: "30M", coins: "10K", cars: "مكلارين سبيد", defect: "سليم", price: 0, email: "mclaren@cpm.com", password: "McLaren123" },
-            { title: "🏆 حساب أسطوري", type: "paid_flawed", money: "99M", coins: "99K", cars: "كل السيارات", defect: "جلتشات متعددة", price: 25, email: "", password: "" }
-        ];
-        
-        const adsList = [
-            "🔥 عرض خاص: خصم 50% على الحسابات المدفوعة!",
-            "⭐ حمل التطبيق واحصل على هدية مجانية",
-            "🚗 جلتش سري جديد للعبة - شاهد الفيديو",
-            "💰 اكسب نقاط مقابل مشاهدة الإعلانات",
-            "🎮 انضم لديسكورد المجتمع",
-            "✨ عروض حصرية لأعضاء المتجر"
-        ];
+        // متغيرات للرسائل والأكواد
+        let mandatoryMessageShown = false;
+        let promoCode = {}; // أكواد الخصم من Firebase
 
-        // ==========================================
-        // INITIALIZATION
-        // ==========================================
-        async function init() {
-            try {
-                app = initializeApp(firebaseConfig);
-                auth = getAuth(app);
-                db = getFirestore(app);
-                
-                await signInAnonymously(auth);
-                
-                document.getElementById('status-dot').className = "w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full bg-green-500";
-                document.getElementById('status-text').innerHTML = "☁️ متصل";
-                document.getElementById('loading-screen').classList.add('hidden');
-                document.getElementById('user-view').classList.remove('hidden');
-                
-                // Listen to Firestore
-                const accountsRef = collection(db, 'cpm_accounts');
-                onSnapshot(accountsRef, (snapshot) => {
-                    accounts = [];
-                    snapshot.forEach(doc => {
-                        accounts.push({ id: doc.id, ...doc.data() });
-                    });
-                    renderAccounts();
-                    updateStats();
-                    if (isAdmin) renderAdminList();
-                }, (error) => {
-                    console.error("Firestore error:", error);
-                    showToast("⚠️ خطأ في القراءة من السحابة");
-                });
-                
-                showToast("✅ تم الاتصال بقاعدة البيانات السحابية");
-                
-            } catch (error) {
-                console.error("Init error:", error);
-                document.getElementById('loading-screen').classList.add('hidden');
-                document.getElementById('error-modal').classList.remove('hidden');
-            }
-        }
-        
-        function showToast(msg) {
+        // Helper Functions
+        function showToast(msg, isError = false) {
             const toast = document.getElementById('toast');
-            toast.querySelector('div').innerText = msg;
+            const messageSpan = document.getElementById('toast-message');
+            if (!toast || !messageSpan) return;
+            
+            if (toastTimeout) clearTimeout(toastTimeout);
+            
+            messageSpan.innerText = msg;
+            const toastDiv = toast.querySelector('div');
+            if (isError) {
+                toastDiv.classList.remove('bg-gradient-to-r', 'from-amber-500', 'to-amber-600');
+                toastDiv.classList.add('bg-gradient-to-r', 'from-red-500', 'to-red-600', 'text-white');
+            } else {
+                toastDiv.classList.remove('bg-gradient-to-r', 'from-red-500', 'to-red-600', 'text-white');
+                toastDiv.classList.add('bg-gradient-to-r', 'from-amber-500', 'to-amber-600', 'text-slate-950');
+            }
+            
             toast.classList.remove('translate-y-20', 'opacity-0');
             toast.classList.add('translate-y-0', 'opacity-100');
-            setTimeout(() => {
+            
+            toastTimeout = setTimeout(() => {
                 toast.classList.remove('translate-y-0', 'opacity-100');
                 toast.classList.add('translate-y-20', 'opacity-0');
+                toastTimeout = null;
             }, 3000);
         }
-        
+
+        // ========== دالة النسخ ==========
+        window.copyToClipboard = async function(text, fieldName) {
+            try {
+                await navigator.clipboard.writeText(text);
+                showToast(`✅ تم نسخ ${fieldName}`);
+            } catch (err) {
+                const textarea = document.createElement('textarea');
+                textarea.value = text;
+                document.body.appendChild(textarea);
+                textarea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textarea);
+                showToast(`✅ تم نسخ ${fieldName}`);
+            }
+        };
+
+        // ========== جلب أكواد الخصم من Firebase ==========
+        async function loadPromoCodesFromFirebase() {
+            try {
+                const codesRef = doc(db, 'settings', 'promoCodes');
+                const docSnap = await getDoc(codesRef);
+                if (docSnap.exists()) {
+                    promoCode = docSnap.data().codes || {};
+                    console.log('✅ تم تحميل الأكواد من Firebase:', Object.keys(promoCode));
+                } else {
+                    // إنشاء أكواد افتراضية في Firebase
+                    const defaultCodes = {
+                        "WELCOME100": 100,
+                        "VIP500": 500,
+                        "FREE50": 50
+                    };
+                    await setDoc(codesRef, { codes: defaultCodes });
+                    promoCode = defaultCodes;
+                    console.log('✅ تم إنشاء أكواد افتراضية في Firebase');
+                }
+            } catch (error) {
+                console.error('خطأ في تحميل الأكواد:', error);
+                promoCode = {};
+            }
+        }
+
+        // ========== الاستماع للتحديثات المباشرة للأكواد ==========
+        function listenToPromoCodes() {
+            const codesRef = doc(db, 'settings', 'promoCodes');
+            onSnapshot(codesRef, (snapshot) => {
+                if (snapshot.exists()) {
+                    promoCode = snapshot.data().codes || {};
+                    console.log('🔄 تم تحديث الأكواد من Firebase:', Object.keys(promoCode));
+                }
+            });
+        }
+
+        // ========== دالة تفعيل كود الخصم ==========
+        async function redeemCode(code) {
+            if (!currentUserId) {
+                showToast('⚠️ يرجى الانتظار، جاري تحميل حسابك', true);
+                return false;
+            }
+            
+            const upperCode = code.toUpperCase().trim();
+            
+            // التحقق من صحة الكود من Firebase
+            if (!promoCode[upperCode]) {
+                showToast('❌ كود غير صحيح! جرب كود آخر', true);
+                return false;
+            }
+            
+            // التحقق من أن المستخدم لم يستخدم هذا الكود من قبل
+            const usedCodes = currentUser.usedCodes || [];
+            if (usedCodes.includes(upperCode)) {
+                showToast('⚠️ لقد استخدمت هذا الكود من قبل!', true);
+                return false;
+            }
+            
+            const pointsToAdd = promoCode[upperCode];
+            const userRef = doc(db, 'users', currentUserId);
+            
+            try {
+                await updateDoc(userRef, {
+                    points: increment(pointsToAdd),
+                    usedCodes: arrayUnion(upperCode)
+                });
+                showToast(`🎉 تهانينا! تم إضافة ${pointsToAdd} نقطة إلى رصيدك`);
+                return true;
+            } catch (error) {
+                console.error('Redeem code error:', error);
+                showToast('❌ فشل في تفعيل الكود، حاول مرة أخرى', true);
+                return false;
+            }
+        }
+
+        function updateUserPointsUI() {
+            const pointsEl = document.getElementById('user-points');
+            if (pointsEl) pointsEl.innerText = currentUser.points || 0;
+            const completedCount = currentUser.completedTasks?.length || 0;
+            document.getElementById('stat-views').innerText = completedCount;
+        }
+
         function updateStats() {
-            const paid = accounts.filter(a => a.type && a.type.startsWith('paid')).length;
-            const free = accounts.filter(a => a.type === 'free').length;
+            const paid = accounts.filter(a => (a.points || 0) > 0).length;
+            const free = accounts.filter(a => (a.points || 0) === 0).length;
             document.getElementById('stat-paid').innerText = paid;
             document.getElementById('stat-free').innerText = free;
-            document.getElementById('stat-views').innerText = localStorage.getItem('ad_views') || "0";
+            document.getElementById('stat-accounts').innerText = accounts.length;
+            document.getElementById('stat-tasks').innerText = tasks.length;
+            updateUserPointsUI();
         }
-        
-        // ==========================================
-        // RENDER ACCOUNTS
-        // ==========================================
+
         function renderAccounts(filtered = null) {
             const grid = document.getElementById('accounts-grid');
             if (!grid) return;
@@ -490,23 +472,19 @@
             }
             document.getElementById('empty-state').classList.add('hidden');
             
-            grid.innerHTML = '';
-            data.forEach(acc => {
-                const isFree = acc.type === 'free';
-                const badge = isFree ? 
-                    '<span class="bg-green-500/20 text-green-400 px-2 py-1 rounded text-[10px] sm:text-xs">🎁 مجاني</span>' :
-                    (acc.type === 'paid_clean' ? 
-                        '<span class="bg-blue-500/20 text-blue-400 px-2 py-1 rounded text-[10px] sm:text-xs">💎 سليم</span>' :
-                        '<span class="bg-amber-500/20 text-amber-400 px-2 py-1 rounded text-[10px] sm:text-xs">⚠️ به عيوب</span>');
+            grid.innerHTML = data.map(acc => {
+                const pointsCost = acc.points || 0;
+                const canRedeem = (currentUser.points || 0) >= pointsCost;
+                const isFree = pointsCost === 0;
                 
-                grid.innerHTML += `
+                return `
                     <div class="bg-slate-900 rounded-xl border border-slate-800 hover:border-amber-500/50 transition overflow-hidden account-card">
                         <div class="p-4 sm:p-5">
                             <div class="flex justify-between items-start mb-3 flex-wrap gap-2">
-                                ${badge}
+                                ${isFree ? '<span class="bg-green-500/20 text-green-400 px-2 py-1 rounded text-[10px] sm:text-xs">🎁 مجاني</span>' : `<span class="bg-amber-500/20 text-amber-400 px-2 py-1 rounded text-[10px] sm:text-xs">💰 ${pointsCost} نقطة</span>`}
                                 <span class="text-[9px] sm:text-[10px] text-slate-500">#${acc.id?.substring(0, 6) || 'new'}</span>
                             </div>
-                            <h4 class="text-base sm:text-lg font-bold text-white mb-3 word-break">${acc.title}</h4>
+                            <h4 class="text-base sm:text-lg font-bold text-white mb-3 word-break">${escapeHtml(acc.title)}</h4>
                             <div class="space-y-1.5 sm:space-y-2 text-xs sm:text-sm">
                                 <div class="flex justify-between flex-wrap gap-1"><span class="text-slate-500">💰 كاش:</span><span class="text-white">${acc.money || '-'}</span></div>
                                 <div class="flex justify-between flex-wrap gap-1"><span class="text-slate-500">⭐ ذهب:</span><span class="text-amber-500">${acc.coins || '-'}</span></div>
@@ -515,363 +493,470 @@
                             </div>
                         </div>
                         <div class="bg-slate-950 p-3 sm:p-4 border-t border-slate-800 flex justify-between items-center flex-wrap gap-2">
-                            <div><span class="text-slate-500 text-[9px] sm:text-xs">السعر</span><p class="text-lg sm:text-xl font-bold text-amber-500">${isFree ? 'مجاناً' : acc.price + '$'}</p></div>
-                            ${isFree ? 
-                                `<button onclick="startAdWorkflow('${acc.id}')" class="bg-green-600 hover:bg-green-500 text-white px-3 sm:px-4 py-1.5 sm:py-2 rounded-xl text-[11px] sm:text-sm font-bold active:scale-95 transition">🎬 فك القفل</button>` :
-                                `<button onclick="openCheckout('${acc.id}')" class="bg-amber-500 hover:bg-amber-600 text-slate-950 px-3 sm:px-4 py-1.5 sm:py-2 rounded-xl text-[11px] sm:text-sm font-bold active:scale-95 transition">💬 شراء</button>`
-                            }
+                            <div><span class="text-slate-500 text-[9px] sm:text-xs">النقاط المطلوبة</span><p class="text-lg sm:text-xl font-bold text-amber-500">${pointsCost} نقطة</p></div>
+                            <button onclick="openCheckout('${acc.id}')" class="${canRedeem || isFree ? 'bg-amber-500 hover:bg-amber-600 text-slate-950' : 'bg-slate-700 text-slate-400 cursor-not-allowed'} px-3 sm:px-4 py-1.5 sm:py-2 rounded-xl text-[11px] sm:text-sm font-bold transition btn-press" ${!canRedeem && !isFree ? 'disabled' : ''}>
+                                ${isFree ? '🎁 احصل عليه مجاناً' : (canRedeem ? '🔄 استبدال بالنقاط' : '⭐ نقاط غير كافية')}
+                            </button>
                         </div>
                     </div>
                 `;
-            });
+            }).join('');
         }
-        
+
+        function escapeHtml(str) { if(!str) return ''; return String(str).replace(/[&<>]/g, function(m) { if(m === '&') return '&amp;'; if(m === '<') return '&lt;'; if(m === '>') return '&gt;'; return m;}); }
+
         function filterAccounts() {
             const search = document.getElementById('search-input')?.value.toLowerCase() || '';
             const category = document.getElementById('category-filter')?.value || 'all';
             const sort = document.getElementById('price-sort')?.value || 'default';
             
             let filtered = accounts.filter(acc => {
-                const matchSearch = acc.title.toLowerCase().includes(search);
+                const matchSearch = acc.title?.toLowerCase().includes(search) || false;
+                const pointsCost = acc.points || 0;
                 const matchCat = category === 'all' ? true : 
-                    category === 'free' ? acc.type === 'free' :
-                    category === 'paid_clean' ? acc.type === 'paid_clean' : acc.type === 'paid_flawed';
+                    category === 'free' ? pointsCost === 0 :
+                    category === 'paid' ? pointsCost > 0 : true;
                 return matchSearch && matchCat;
             });
             
-            if (sort === 'low-high') filtered.sort((a, b) => (a.price || 0) - (b.price || 0));
-            if (sort === 'high-low') filtered.sort((a, b) => (b.price || 0) - (a.price || 0));
+            if (sort === 'low-high') filtered.sort((a, b) => (a.points || 0) - (b.points || 0));
+            if (sort === 'high-low') filtered.sort((a, b) => (b.points || 0) - (a.points || 0));
             
             renderAccounts(filtered);
         }
-        
-        // ==========================================
-        // VIEW MANAGEMENT
-        // ==========================================
-        window.switchView = function(target) {
-            currentView = target;
-            document.getElementById('user-view')?.classList.add('hidden');
-            document.getElementById('admin-login-view')?.classList.add('hidden');
-            document.getElementById('admin-dashboard-view')?.classList.add('hidden');
+
+        function renderTasks() {
+            const grid = document.getElementById('tasks-grid');
+            if (!grid) return;
             
-            if (target === 'user') {
-                document.getElementById('user-view')?.classList.remove('hidden');
-                document.getElementById('header-action-btn').innerHTML = "🔑 لوحة الإدارة";
-            } else if (target === 'login') {
-                document.getElementById('admin-login-view')?.classList.remove('hidden');
-                document.getElementById('header-action-btn').innerHTML = "🏠 العودة";
-            } else if (target === 'admin' && isAdmin) {
-                document.getElementById('admin-dashboard-view')?.classList.remove('hidden');
-                document.getElementById('header-action-btn').innerHTML = "🚪 خروج";
-                renderAdminList();
+            document.getElementById('tasks-count').innerText = `${tasks.length} مهمة`;
+            
+            if (tasks.length === 0) {
+                document.getElementById('empty-tasks').classList.remove('hidden');
+                grid.innerHTML = '';
+                return;
             }
-        };
-        
-        window.handleHeaderAction = function() {
-            if (currentView === 'user') {
-                if (isAdmin) switchView('admin');
-                else switchView('login');
-            } else if (currentView === 'login') {
-                switchView('user');
-            } else if (currentView === 'admin') {
-                logoutAdmin();
-            }
-        };
-        
-        window.submitAdminLogin = function() {
-            const pass = document.getElementById('admin-pass').value;
-            if (pass === ADMIN_PASSWORD) {
-                isAdmin = true;
-                showToast("🔓 مرحباً بك في لوحة التحكم");
-                switchView('admin');
-            } else {
-                showToast("❌ كلمة المرور خاطئة");
-            }
-        };
-        
-        function logoutAdmin() {
-            isAdmin = false;
-            showToast("👋 تم تسجيل الخروج");
-            switchView('user');
+            document.getElementById('empty-tasks').classList.add('hidden');
+            
+            const completedTasks = currentUser.completedTasks || [];
+            
+            grid.innerHTML = tasks.map(task => {
+                const isCompleted = completedTasks.includes(task.id);
+                return `
+                    <div class="bg-slate-900 p-4 rounded-2xl border ${isCompleted ? 'border-green-500/30' : 'border-slate-800'}">
+                        <div class="flex justify-between items-start gap-3 mb-3">
+                            <div class="min-w-0 flex-1">
+                                <h4 class="text-white font-bold text-base">${escapeHtml(task.title)}</h4>
+                                ${task.description ? `<p class="text-slate-400 text-[11px] sm:text-sm mt-1">${escapeHtml(task.description)}</p>` : ''}
+                                <div class="flex items-center gap-3 mt-2 flex-wrap">
+                                    <span class="text-amber-400 font-bold text-sm">+${task.points || 0} نقطة</span>
+                                    ${task.link ? `<a href="${task.link}" target="_blank" class="text-sky-400 text-xs hover:underline">🔗 رابط المهمة</a>` : ''}
+                                </div>
+                            </div>
+                            ${isCompleted ? '<i class="fas fa-check-circle text-green-500 text-2xl"></i>' : ''}
+                        </div>
+                        <button onclick="completeTask('${task.id}')" class="w-full ${isCompleted ? 'bg-green-600/30 text-green-400 cursor-default' : 'bg-amber-500 hover:bg-amber-600 text-slate-950'} font-bold py-3 rounded-xl transition ${!isCompleted ? 'btn-press' : ''}" ${isCompleted ? 'disabled' : ''}>
+                            ${isCompleted ? '✅ تم الإكتمال' : '📌 أكمل المهمة'}
+                        </button>
+                    </div>
+                `;
+            }).join('');
         }
-        
-        // ==========================================
-        // FIREBASE OPERATIONS
-        // ==========================================
-        async function addAccount(accountData) {
+
+        window.completeTask = async function(taskId) {
+            if (!currentUserId) {
+                showToast('⚠️ يرجى الانتظار، جاري التحقق من المستخدم', true);
+                return;
+            }
+            
+            const task = tasks.find(t => t.id === taskId);
+            if (!task) {
+                showToast('⚠️ المهمة غير موجودة', true);
+                return;
+            }
+            
+            if (currentUser.completedTasks?.includes(taskId)) {
+                showToast('✅ لقد أكملت هذه المهمة مسبقاً');
+                return;
+            }
+            
+            const pointsToAdd = task.points || 0;
+            const userRef = doc(db, 'users', currentUserId);
+            
             try {
-                const accountsRef = collection(db, 'cpm_accounts');
-                await addDoc(accountsRef, accountData);
-                showToast("✅ تم رفع الحساب للسحابة");
+                await updateDoc(userRef, { 
+                    points: increment(pointsToAdd),
+                    completedTasks: arrayUnion(taskId)
+                });
+                showToast(`🎉 +${pointsToAdd} نقطة! تم إكمال المهمة بنجاح`);
+            } catch (error) {
+                console.error('Error completing task:', error);
+                showToast('❌ فشل في إكمال المهمة، حاول مرة أخرى', true);
+            }
+        };
+
+        window.openCheckout = function(accountId) {
+            const account = accounts.find(a => a.id === accountId);
+            if (!account) return;
+            
+            const pointsCost = account.points || 0;
+            
+            if (pointsCost === 0) {
+                showAccountCredentials(account);
+                return;
+            }
+            
+            if ((currentUser.points || 0) < pointsCost) {
+                showToast(`⚠️ نقاطك غير كافية! تحتاج ${pointsCost} نقطة`, true);
+                return;
+            }
+            
+            activeCheckout = account;
+            document.getElementById('checkout-title').innerText = account.title;
+            document.getElementById('checkout-price').innerHTML = `<span class="text-amber-400">${pointsCost} نقطة</span>`;
+            document.getElementById('checkout-result').classList.add('hidden');
+            const actionBtn = document.getElementById('checkout-action-btn');
+            actionBtn.disabled = false;
+            actionBtn.innerText = '🔄 استبدال بالنقاط';
+            actionBtn.classList.remove('bg-slate-700', 'cursor-not-allowed', 'opacity-50');
+            actionBtn.classList.add('bg-emerald-600', 'hover:bg-emerald-500');
+            document.getElementById('checkout-modal').classList.remove('hidden');
+        };
+
+        async function redeemAccount(account) {
+            if (!currentUserId || !account) return false;
+            
+            const pointsCost = account.points || 0;
+            if ((currentUser.points || 0) < pointsCost) {
+                showToast('⚠️ نقاطك غير كافية', true);
+                return false;
+            }
+            
+            const userRef = doc(db, 'users', currentUserId);
+            try {
+                await updateDoc(userRef, {
+                    points: increment(-pointsCost)
+                });
                 return true;
             } catch (error) {
-                console.error("Add error:", error);
-                showToast("❌ فشل الرفع للسحابة");
+                console.error('Redeem error:', error);
+                showToast('❌ فشل في خصم النقاط', true);
                 return false;
             }
         }
-        
-        async function deleteAccount(id) {
-            if (!confirm('⚠️ هل أنت متأكد من حذف هذا الحساب؟')) return;
-            try {
-                await deleteDoc(doc(db, 'cpm_accounts', id));
-                showToast("✅ تم حذف الحساب");
-            } catch (error) {
-                console.error("Delete error:", error);
-                showToast("❌ فشل الحذف");
-            }
-        }
-        
-        async function loadDefaultAccounts() {
-            for (const acc of defaultAccounts) {
-                await addAccount(acc);
-            }
-            showToast("✅ تم رفع الحسابات الافتراضية");
-        }
-        
-        function renderAdminList() {
-            const container = document.getElementById('admin-accounts-list');
-            if (!container) return;
-            container.innerHTML = '';
+
+        function showAccountCredentials(account) {
+            document.getElementById('checkout-title').innerText = account.title;
+            document.getElementById('checkout-price').innerHTML = `<span class="text-green-400">0 نقطة - مجاني!</span>`;
             
-            if (accounts.length === 0) {
-                container.innerHTML = '<p class="text-center text-slate-500 py-4 text-sm">لا توجد حسابات</p>';
-                return;
-            }
+            const email = account.email || 'free@cpm-store.com';
+            const password = account.password || 'FreeAccess123';
             
-            accounts.forEach(acc => {
-                container.innerHTML += `
-                    <div class="flex justify-between items-center bg-slate-800 p-2.5 sm:p-3 rounded-lg">
-                        <div class="text-right flex-1 min-w-0">
-                            <p class="text-white text-sm sm:text-base font-bold word-break">${acc.title}</p>
-                            <p class="text-slate-400 text-[10px] sm:text-xs">${acc.type === 'free' ? 'مجاني' : (acc.price + '$')}</p>
-                        </div>
-                        <button onclick="deleteAccount('${acc.id}')" class="bg-red-600/20 hover:bg-red-600 text-red-400 hover:text-white px-2.5 sm:px-3 py-1 rounded-lg text-[10px] sm:text-xs active:scale-95 transition ml-2">حذف</button>
-                    </div>
-                `;
-            });
-        }
-        
-        // ==========================================
-        // FORM HANDLER
-        // ==========================================
-        document.getElementById('add-form')?.addEventListener('submit', async (e) => {
-            e.preventDefault();
-            const type = document.getElementById('type').value;
-            const account = {
-                title: document.getElementById('title').value,
-                type: type,
-                money: document.getElementById('money').value || "غير محدد",
-                coins: document.getElementById('coins').value || "غير محدد",
-                cars: document.getElementById('cars').value || "سيارات متنوعة",
-                defect: document.getElementById('defect').value || "سليم",
-                price: type === 'free' ? 0 : parseInt(document.getElementById('price').value) || 0,
-                email: type === 'free' ? document.getElementById('email').value : "",
-                password: type === 'free' ? document.getElementById('password').value : "",
-                createdAt: new Date().toISOString()
-            };
-            if (!account.title) {
-                showToast("❌ الرجاء إدخال اسم الحساب");
-                return;
-            }
-            await addAccount(account);
-            e.target.reset();
-            document.getElementById('free-fields').classList.add('hidden');
-            document.getElementById('paid-fields').classList.add('hidden');
-        });
-        
-        document.getElementById('type')?.addEventListener('change', (e) => {
-            const freeFields = document.getElementById('free-fields');
-            const paidFields = document.getElementById('paid-fields');
-            if (e.target.value === 'free') {
-                freeFields.classList.remove('hidden');
-                paidFields.classList.add('hidden');
-            } else {
-                freeFields.classList.add('hidden');
-                paidFields.classList.remove('hidden');
-            }
-        });
-        
-        // ==========================================
-        // AD SYSTEM
-        // ==========================================
-        window.startAdWorkflow = function(accountId) {
-            activeAdAccount = accounts.find(a => a.id === accountId);
-            if (!activeAdAccount) return;
-            adIndex = 0;
-            document.getElementById('ad-progress').innerText = `0 / 12`;
-            document.getElementById('ad-progress-bar').style.width = '0%';
-            document.getElementById('ad-content').classList.remove('hidden');
-            document.getElementById('ad-success').classList.add('hidden');
-            document.getElementById('ad-btn').classList.remove('hidden');
-            document.getElementById('ad-btn').innerHTML = 'ابدأ المشاهدة (1/12)';
-            document.getElementById('ad-modal').classList.remove('hidden');
-        };
-        
-        window.closeAdModal = function() {
-            if (adTimer) clearInterval(adTimer);
-            document.getElementById('ad-modal').classList.add('hidden');
-            activeAdAccount = null;
-        };
-        
-        window.watchAd = function() {
-            if (adIndex >= 12) return;
+            document.getElementById('checkout-email').innerHTML = `
+                <div class="flex items-center justify-between gap-2 flex-wrap bg-slate-900/50 p-2 rounded-lg">
+                    <span class="text-white font-semibold text-sm word-break">${escapeHtml(email)}</span>
+                    <button onclick="copyToClipboard('${escapeHtml(email)}', 'البريد الإلكتروني')" 
+                            class="bg-emerald-600 hover:bg-emerald-500 text-white px-3 py-1.5 rounded-lg text-xs transition btn-press">
+                        <i class="fas fa-copy ml-1"></i> نسخ
+                    </button>
+                </div>
+            `;
             
-            const btn = document.getElementById('ad-btn');
-            btn.disabled = true;
-            btn.innerHTML = "⏳ جاري تشغيل الإعلان...";
+            document.getElementById('checkout-password').innerHTML = `
+                <div class="flex items-center justify-between gap-2 flex-wrap bg-slate-900/50 p-2 rounded-lg">
+                    <span class="text-white font-semibold text-sm word-break">${escapeHtml(password)}</span>
+                    <button onclick="copyToClipboard('${escapeHtml(password)}', 'كلمة المرور')" 
+                            class="bg-amber-500 hover:bg-amber-600 text-slate-950 px-3 py-1.5 rounded-lg text-xs transition btn-press">
+                        <i class="fas fa-copy ml-1"></i> نسخ
+                    </button>
+                </div>
+            `;
             
-            let countdown = 5;
-            const randomAd = adsList[Math.floor(Math.random() * adsList.length)];
-            document.getElementById('ad-text').innerHTML = `${randomAd}<br><span class="text-amber-500 text-xl sm:text-2xl block mt-2">${countdown}</span>`;
-            
-            if (adTimer) clearInterval(adTimer);
-            adTimer = setInterval(() => {
-                countdown--;
-                document.getElementById('ad-text').innerHTML = `${randomAd}<br><span class="text-amber-500 text-xl sm:text-2xl block mt-2">${countdown}</span>`;
-                
-                if (countdown <= 0) {
-                    clearInterval(adTimer);
-                    adIndex++;
-                    const views = parseInt(localStorage.getItem('ad_views') || "0") + 1;
-                    localStorage.setItem('ad_views', views);
-                    updateStats();
-                    
-                    const percent = (adIndex / 12) * 100;
-                    document.getElementById('ad-progress-bar').style.width = `${percent}%`;
-                    document.getElementById('ad-progress').innerText = `${adIndex} / 12`;
-                    
-                    if (adIndex >= 12) {
-                        document.getElementById('ad-content').classList.add('hidden');
-                        document.getElementById('ad-btn').classList.add('hidden');
-                        document.getElementById('released-email').innerText = activeAdAccount.email || "free@cpm-store.com";
-                        document.getElementById('released-pass').innerText = activeAdAccount.password || "FreeAccess123";
-                        document.getElementById('ad-success').classList.remove('hidden');
-                        showToast("🎉 تهانينا! تم فتح الحساب");
-                    } else {
-                        btn.disabled = false;
-                        btn.innerHTML = `شاهد الإعلان التالي (${adIndex + 1}/12)`;
-                        showToast(`✅ أتممت ${adIndex}/12 إعلان`);
-                    }
-                }
-            }, 1000);
-        };
-        
-        // ==========================================
-        // CHECKOUT SYSTEM
-        // ==========================================
-        window.openCheckout = function(accountId) {
-            activeCheckout = accounts.find(a => a.id === accountId);
-            if (!activeCheckout) return;
-            document.getElementById('checkout-title').innerText = activeCheckout.title;
-            document.getElementById('checkout-price').innerText = `${activeCheckout.price}$`;
+            document.getElementById('checkout-result').classList.remove('hidden');
+            const actionBtn = document.getElementById('checkout-action-btn');
+            actionBtn.disabled = true;
+            actionBtn.innerText = '✅ تم الاستلام';
+            actionBtn.classList.add('bg-slate-700', 'cursor-not-allowed', 'opacity-50');
+            actionBtn.classList.remove('bg-emerald-600', 'hover:bg-emerald-500');
             document.getElementById('checkout-modal').classList.remove('hidden');
+            showToast('🎁 تم فتح الحساب المجاني بنجاح');
+        }
+
+        window.confirmRedeem = async function() {
+            if (!activeCheckout) return;
+            
+            const pointsCost = activeCheckout.points || 0;
+            if ((currentUser.points || 0) < pointsCost) {
+                showToast('⚠️ نقاطك غير كافية لإتمام العملية', true);
+                closeCheckoutModal();
+                return;
+            }
+            
+            const success = await redeemAccount(activeCheckout);
+            if (!success) return;
+            
+            const email = activeCheckout.email || 'لا يوجد بريد إلكتروني';
+            const password = activeCheckout.password || 'لا يوجد كلمة مرور';
+            
+            document.getElementById('checkout-email').innerHTML = `
+                <div class="flex items-center justify-between gap-2 flex-wrap bg-slate-900/50 p-2 rounded-lg">
+                    <span class="text-white font-semibold text-sm word-break">${escapeHtml(email)}</span>
+                    <button onclick="copyToClipboard('${escapeHtml(email)}', 'البريد الإلكتروني')" 
+                            class="bg-emerald-600 hover:bg-emerald-500 text-white px-3 py-1.5 rounded-lg text-xs transition btn-press">
+                        <i class="fas fa-copy ml-1"></i> نسخ
+                    </button>
+                </div>
+            `;
+            
+            document.getElementById('checkout-password').innerHTML = `
+                <div class="flex items-center justify-between gap-2 flex-wrap bg-slate-900/50 p-2 rounded-lg">
+                    <span class="text-white font-semibold text-sm word-break">${escapeHtml(password)}</span>
+                    <button onclick="copyToClipboard('${escapeHtml(password)}', 'كلمة المرور')" 
+                            class="bg-amber-500 hover:bg-amber-600 text-slate-950 px-3 py-1.5 rounded-lg text-xs transition btn-press">
+                        <i class="fas fa-copy ml-1"></i> نسخ
+                    </button>
+                </div>
+            `;
+            
+            document.getElementById('checkout-result').classList.remove('hidden');
+            
+            const actionBtn = document.getElementById('checkout-action-btn');
+            actionBtn.disabled = true;
+            actionBtn.innerText = '✅ تم الاستبدال';
+            actionBtn.classList.add('bg-slate-700', 'cursor-not-allowed', 'opacity-50');
+            actionBtn.classList.remove('bg-emerald-600', 'hover:bg-emerald-500');
+            
+            showToast(`✅ تم استبدال ${activeCheckout.title} بنجاح!`);
+            activeCheckout = null;
         };
-        
+
         window.closeCheckoutModal = function() {
             document.getElementById('checkout-modal').classList.add('hidden');
             activeCheckout = null;
         };
-        
-        window.sendWhatsApp = function() {
-            if (!activeCheckout) return;
-            const phone = document.getElementById('whatsapp-number').value;
-            const msg = `مرحباً، أريد شراء الحساب التالي:\n📌 ${activeCheckout.title}\n💰 السعر: ${activeCheckout.price}$`;
-            window.open(`https://wa.me/${phone}?text=${encodeURIComponent(msg)}`, '_blank');
-            closeCheckoutModal();
-        };
-        
-        // Export functions
-        window.deleteAccount = deleteAccount;
-        window.loadDefaultAccounts = loadDefaultAccounts;
-        window.filterAccounts = filterAccounts;
-        window.logoutAdmin = logoutAdmin;
-        
-        // Start
-        init();
-        // ==========================================
-// زر تثبيت التطبيق PWA
-// ==========================================
-let deferredPrompt;
 
-// إنشاء زر التثبيت
-function createInstallButton() {
-    const navbar = document.querySelector('header .flex.items-center.justify-between');
-    if (navbar && !document.getElementById('install-btn')) {
-        const btn = document.createElement('button');
-        btn.id = 'install-btn';
-        btn.innerHTML = '📲 تثبيت التطبيق';
-        btn.className = 'bg-green-600 hover:bg-green-700 text-white px-2.5 sm:px-3.5 py-1 sm:py-1.5 rounded-xl text-[10px] sm:text-xs font-black transition active:scale-95';
-        btn.style.display = 'none';
-        navbar.appendChild(btn);
-        
-        btn.addEventListener('click', async () => {
-            if (deferredPrompt) {
-                deferredPrompt.prompt();
-                const { outcome } = await deferredPrompt.userChoice;
-                if (outcome === 'accepted') {
-                    console.log('تم تثبيت التطبيق');
-                    btn.style.display = 'none';
-                }
-                deferredPrompt = null;
+        function switchUserSection(section) {
+            activeSection = section;
+            document.getElementById('accounts-section').classList.toggle('hidden', section !== 'accounts');
+            document.getElementById('tasks-section').classList.toggle('hidden', section !== 'tasks');
+            
+            const accountsBtn = document.getElementById('nav-accounts-btn');
+            const tasksBtn = document.getElementById('nav-tasks-btn');
+            
+            if (section === 'accounts') {
+                accountsBtn.classList.add('bg-amber-500', 'text-slate-950');
+                accountsBtn.classList.remove('bg-slate-800', 'text-slate-200');
+                tasksBtn.classList.add('bg-slate-800', 'text-slate-200');
+                tasksBtn.classList.remove('bg-emerald-500', 'text-slate-950');
+                filterAccounts();
+            } else {
+                tasksBtn.classList.add('bg-emerald-500', 'text-slate-950');
+                tasksBtn.classList.remove('bg-slate-800', 'text-slate-200');
+                accountsBtn.classList.add('bg-slate-800', 'text-slate-200');
+                accountsBtn.classList.remove('bg-amber-500', 'text-slate-950');
+                renderTasks();
             }
+        }
+
+        // ========== نظام استقبال الرسائل من الأدمن ==========
+        function disableSiteInteraction(disable) {
+            const mainContent = document.getElementById('user-view');
+            if (!mainContent) return;
+            
+            if (disable) {
+                mainContent.style.pointerEvents = 'none';
+                mainContent.style.opacity = '0.5';
+                mainContent.style.userSelect = 'none';
+            } else {
+                mainContent.style.pointerEvents = '';
+                mainContent.style.opacity = '';
+                mainContent.style.userSelect = '';
+            }
+        }
+
+        function showMandatoryMessage(message) {
+            if (mandatoryMessageShown) return;
+            mandatoryMessageShown = true;
+            
+            const titleEl = document.getElementById('mandatory-title');
+            const contentEl = document.getElementById('mandatory-content');
+            
+            if (titleEl) titleEl.innerText = message.title || '⚠️ تنبيه هام من الإدارة';
+            if (contentEl) contentEl.innerHTML = message.content || 'تم تعطيل حسابك مؤقتاً. يرجى التواصل مع الدعم الفني.';
+            
+            const modal = document.getElementById('mandatory-message-modal');
+            if (modal) modal.classList.remove('hidden');
+            
+            disableSiteInteraction(true);
+        }
+
+        function hideMandatoryMessage() {
+            mandatoryMessageShown = false;
+            const modal = document.getElementById('mandatory-message-modal');
+            if (modal) modal.classList.add('hidden');
+            disableSiteInteraction(false);
+        }
+
+        function showNormalMessage(message) {
+            const titleEl = document.getElementById('normal-title');
+            const contentEl = document.getElementById('normal-content');
+            
+            if (titleEl) titleEl.innerText = message.title || '📢 إشعار من الإدارة';
+            if (contentEl) contentEl.innerHTML = message.content;
+            
+            const modal = document.getElementById('normal-message-modal');
+            if (modal) modal.classList.remove('hidden');
+            
+            const closeBtn = document.getElementById('normal-close-btn');
+            if (closeBtn) {
+                closeBtn.onclick = () => {
+                    modal.classList.add('hidden');
+                };
+            }
+        }
+
+        async function checkUserMessages(uid) {
+            if (!uid) return;
+            
+            const userRef = doc(db, 'users', uid);
+            
+            onSnapshot(userRef, (snapshot) => {
+                if (snapshot.exists()) {
+                    const userData = snapshot.data();
+                    
+                    if (userData.activeMessage && userData.activeMessage.type === 'mandatory' && !userData.activeMessage.dismissed) {
+                        showMandatoryMessage(userData.activeMessage);
+                    } else {
+                        if (mandatoryMessageShown) hideMandatoryMessage();
+                    }
+                    
+                    if (userData.notifications && userData.notifications.length > 0) {
+                        const unreadNotifications = userData.notifications.filter(n => !n.read);
+                        if (unreadNotifications.length > 0) {
+                            const latest = unreadNotifications[0];
+                            showNormalMessage(latest);
+                            updateDoc(userRef, {
+                                notifications: userData.notifications.map(n => 
+                                    n.id === latest.id ? { ...n, read: true } : n
+                                )
+                            }).catch(console.error);
+                        }
+                    }
+                }
+            });
+        }
+
+        async function initUserDoc(uid) {
+            if (!uid) return;
+            const userRef = doc(db, 'users', uid);
+            const userSnapshot = await getDoc(userRef);
+            if (!userSnapshot.exists()) {
+                await setDoc(userRef, { points: 0, completedTasks: [], usedCodes: [], notifications: [] });
+            }
+            
+            onSnapshot(userRef, (snapshot) => {
+                if (snapshot.exists()) {
+                    currentUser = { uid, ...snapshot.data() };
+                } else {
+                    currentUser = { points: 0, completedTasks: [], usedCodes: [] };
+                }
+                updateUserPointsUI();
+                updateStats();
+                if (activeSection === 'tasks') renderTasks();
+                if (activeSection === 'accounts') filterAccounts();
+            });
+        }
+
+        async function init() {
+            try {
+                app = initializeApp(firebaseConfig);
+                auth = getAuth(app);
+                db = getFirestore(app);
+                
+                // تحميل الأكواد من Firebase
+                await loadPromoCodesFromFirebase();
+                listenToPromoCodes();
+                
+                await signInAnonymously(auth);
+                
+                onAuthStateChanged(auth, async (user) => {
+                    if (user) {
+                        currentUserId = user.uid;
+                        await initUserDoc(currentUserId);
+                        checkUserMessages(currentUserId);
+                    }
+                });
+                
+                document.getElementById('status-dot').className = "w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full bg-green-500";
+                document.getElementById('status-text').innerHTML = "☁️ متصل";
+                document.getElementById('loading-screen').classList.add('hidden');
+                document.getElementById('user-view').classList.remove('hidden');
+                
+                onSnapshot(collection(db, 'cpm_accounts'), (snapshot) => {
+                    accounts = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+                    updateStats();
+                    if (activeSection === 'accounts') filterAccounts();
+                });
+                
+                onSnapshot(collection(db, 'tasks'), (snapshot) => {
+                    tasks = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+                    updateStats();
+                    if (activeSection === 'tasks') renderTasks();
+                });
+                
+                showToast("✅ تم الاتصال بالسحابة بنجاح");
+            } catch (error) {
+                console.error("Init error:", error);
+                document.getElementById('loading-screen').classList.add('hidden');
+                document.getElementById('error-modal').classList.remove('hidden');
+            }
+        }
+        
+        // تفعيل كود الخصم
+        document.getElementById('redeem-code-btn')?.addEventListener('click', async () => {
+            const codeInput = document.getElementById('redeem-code-input');
+            const code = codeInput.value.trim();
+            if (!code) {
+                showToast('⚠️ الرجاء إدخال الكود', true);
+                return;
+            }
+            await redeemCode(code);
+            codeInput.value = '';
         });
-        return btn;
-    }
-    return null;
-}
-
-// الاستماع لحدث التثبيت
-window.addEventListener('beforeinstallprompt', (e) => {
-    e.preventDefault();
-    deferredPrompt = e;
-    
-    setTimeout(() => {
-        const btn = document.getElementById('install-btn');
-        if (btn) {
-            btn.style.display = 'inline-flex';
-            btn.style.alignItems = 'center';
-            btn.style.gap = '4px';
+        
+        // Event Listeners
+        document.getElementById('nav-accounts-btn')?.addEventListener('click', () => switchUserSection('accounts'));
+        document.getElementById('nav-tasks-btn')?.addEventListener('click', () => switchUserSection('tasks'));
+        document.getElementById('checkout-action-btn')?.addEventListener('click', () => {
+            if (window.confirmRedeem) window.confirmRedeem();
+        });
+        
+        window.filterAccounts = filterAccounts;
+        
+        init();
+        
+        // PWA Install
+        let deferredPrompt;
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+        });
+        
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/sw.js').catch(err => console.log('SW error:', err));
+            });
         }
-    }, 1000);
-});
-
-// عند اكتمال التثبيت
-window.addEventListener('appinstalled', () => {
-    deferredPrompt = null;
-    const btn = document.getElementById('install-btn');
-    if (btn) btn.style.display = 'none';
-    showToast('✅ تم تثبيت التطبيق بنجاح');
-});
-
-// تشغيل إنشاء الزر
-document.addEventListener('DOMContentLoaded', () => {
-    setTimeout(createInstallButton, 500);
-});
-
-// تسجيل Service Worker
-if ('serviceWorker' in navigator) {
-    window.addEventListener('load', () => {
-        navigator.serviceWorker.register('/sw.js')
-            .then(reg => console.log('Service Worker registered:', reg))
-            .catch(err => console.log('Service Worker error:', err));
-    });
-}
-fetch("config.json")
-    .then(response => response.json())
-    .then(config => {
-        const topMessageEl = document.getElementById("top-message");
-        const showTopMessage = config.showTopMessage !== false;
-        topMessageEl.style.display = showTopMessage ? "block" : "none";
-        if (showTopMessage) {
-            if (config.topMessage) topMessageEl.textContent = config.topMessage;
-            if (config.topMessageBg) topMessageEl.style.background = config.topMessageBg;
-            if (config.topMessageColor) topMessageEl.style.color = config.topMessageColor;
-        }
-    })
-    .catch(error => {
-        console.error("خطأ في تحميل config.json:", error);
-    });
+        
+        fetch("config.json")
+            .then(response => response.json())
+            .then(config => {
+                const topMsg = document.getElementById("top-message");
+                if (topMsg && config.topMessage) topMsg.textContent = config.topMessage;
+            })
+            .catch(error => {
+                console.error("خطأ في تحميل config.json:", error);
+            });
     </script>
 </body>
 </html>
