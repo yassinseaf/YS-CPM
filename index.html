@@ -186,10 +186,13 @@
     </div>
 
     <!-- VIEW 1: USER VIEW -->
-    <div id="user-view" class="flex-grow flex flex-col hidden">
-        <div class="bg-gradient-to-l from-amber-600 to-amber-500 text-slate-950 px-3 py-1.5 sm:py-2 text-center text-[10px] sm:text-xs font-black">
-             🔥 نظام الحسابات المحدث: تخطى 12 إعلاناً واحصل على بيانات الحساب فوراً!
-        </div>
+<div id="user-view" class="flex-grow flex flex-col hidden">
+    
+    <!-- الشريط -->
+    <div id="top-message"
+         class="bg-gradient-to-l from-amber-600 to-amber-500 text-slate-950 px-3 py-1.5 sm:py-2 text-center text-[10px] sm:text-xs font-black">
+    </div>
+  
 
         <section class="relative bg-slate-950 py-8 sm:py-12 border-b border-slate-800 overflow-hidden">
             <div class="absolute inset-0 opacity-5 bg-[radial-gradient(#f59e0b_1px,transparent_1px)] [background-size:16px_16px]"></div>
@@ -854,6 +857,21 @@ if ('serviceWorker' in navigator) {
             .catch(err => console.log('Service Worker error:', err));
     });
 }
+fetch("config.json")
+    .then(response => response.json())
+    .then(config => {
+        const topMessageEl = document.getElementById("top-message");
+        const showTopMessage = config.showTopMessage !== false;
+        topMessageEl.style.display = showTopMessage ? "block" : "none";
+        if (showTopMessage) {
+            if (config.topMessage) topMessageEl.textContent = config.topMessage;
+            if (config.topMessageBg) topMessageEl.style.background = config.topMessageBg;
+            if (config.topMessageColor) topMessageEl.style.color = config.topMessageColor;
+        }
+    })
+    .catch(error => {
+        console.error("خطأ في تحميل config.json:", error);
+    });
     </script>
 </body>
 </html>
